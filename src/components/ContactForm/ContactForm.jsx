@@ -1,7 +1,9 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
+import { addContact } from "../../redux/contactsSlice";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -13,13 +15,15 @@ const validationSchema = Yup.object({
     .matches(/^[\d+\-]+$/, "Number must contain only digits, '+' or '-'"),
 });
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{ name: "", number: "" }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
-        onSubmit({ id: nanoid(), ...values });
+        dispatch(addContact({ id: nanoid(), ...values }));
         resetForm();
       }}
     >
