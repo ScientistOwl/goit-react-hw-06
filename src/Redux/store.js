@@ -14,6 +14,12 @@ const store = configureStore({
     contacts: persistReducer(contactsPersistConfig, contactsReducer),
     filters: filtersReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST"],
+      },
+    }),
 });
 
 const persistor = persistStore(store);
